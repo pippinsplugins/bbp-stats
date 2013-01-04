@@ -341,7 +341,10 @@ class PW_BBP_Stats {
 			'posts_per_page' => -1,
 			'year'           => $year,
 			'monthnum'       => $month,
-			'post_status'    => 'publish'
+			'post_status'    => 'publish',
+			'no_found_rows'  => false,
+			'cache_results'  => false,
+			'fields'         => 'ids'
 		);
 		if ( !empty( $day ) )
 			$args['day'] = $day;

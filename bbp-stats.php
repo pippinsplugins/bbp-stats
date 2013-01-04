@@ -387,13 +387,13 @@ class PW_BBP_Stats {
 
 	private function bpp_stats_controls() {
 		$date_options = apply_filters( 'bbp_stats_date_options', array(
-			'this_month' 	=> __( 'This Month', 'bpp-stats' ),
-			'last_month' 	=> __( 'Last Month', 'bpp-stats' ),
-			'this_quarter'	=> __( 'This Quarter', 'bpp-stats' ),
-			'last_quarter'	=> __( 'Last Quarter', 'bpp-stats' ),
-			'this_year'		=> __( 'This Year', 'bpp-stats' ),
-			'last_year'		=> __( 'Last Year', 'bpp-stats' ),
-			'other'			=> __( 'Other', 'bpp-stats' )
+			'this_month'    => __( 'This Month', 'bpp-stats' ),
+			'last_month'    => __( 'Last Month', 'bpp-stats' ),
+			'this_quarter'  => __( 'This Quarter', 'bpp-stats' ),
+			'last_quarter'  => __( 'Last Quarter', 'bpp-stats' ),
+			'this_year'     => __( 'This Year', 'bpp-stats' ),
+			'last_year'     => __( 'Last Year', 'bpp-stats' ),
+			'other'         => __( 'Other', 'bpp-stats' )
 		) );
 
 		$dates = self::graph_dates();

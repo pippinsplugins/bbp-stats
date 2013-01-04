@@ -63,7 +63,7 @@ class PW_BBP_Stats {
 
 
 	/**
-	 * Add all filter we need
+	 * Add all filters we need
 	 *
 	 * @since v1.0
 	 *
@@ -75,9 +75,16 @@ class PW_BBP_Stats {
 	}
 
 
+	/**
+	 * Register our Forums menu
+	 *
+	 * @since v1.0
+	 *
+	 * @return void
+	 */
 	public function forums_menu() {
 		add_submenu_page(
-			'edit.php?post_type=forum',
+			'edit.php?post_type=' . bbp_get_forum_post_type(),
 			__( 'Stats', 'bbp-stats' ),
 			__( 'Stats', 'bbp-stats' ),
 			'publish_forums',
@@ -85,6 +92,15 @@ class PW_BBP_Stats {
 			array( __CLASS__, 'stats_page' )
 		);
 	}
+
+
+	/**
+	 * Render the stats page
+	 *
+	 * @since v1.0
+	 *
+	 * @return void
+	 */
 
 	public function stats_page() {
 
@@ -294,6 +310,14 @@ class PW_BBP_Stats {
 	}
 
 
+	/**
+	 * Load our JS scripts
+	 *
+	 * @since v1.0
+	 *
+	 * @return void
+	 */
+
 	public function scripts( $hook ) {
 
 		if( 'forum_page_bbp-stats' != $hook )
@@ -301,6 +325,15 @@ class PW_BBP_Stats {
 
 		wp_enqueue_script( 'jquery-flot', plugins_url( 'assets/js/jquery.flot.js' , __FILE__ ), array( 'jquery' ), filemtime( __FILE__ ) );
 	}
+
+
+	/**
+	 * Retrieve topics by date
+	 *
+	 * @since v1.0
+	 *
+	 * @return int
+	 */
 
 	private function topics_by_date( $day = null, $month = null, $year = null ) {
 		$args = array(
@@ -319,6 +352,14 @@ class PW_BBP_Stats {
 	}
 
 
+	/**
+	 * Retrieve replies by date
+	 *
+	 * @since v1.0
+	 *
+	 * @return int
+	 */
+
 	private function replies_by_date( $day = null, $month = null, $year = null ) {
 		$args = array(
 			'post_type'      => bbp_get_reply_post_type(),
@@ -335,62 +376,79 @@ class PW_BBP_Stats {
 		return (int) $topics->post_count;
 	}
 
+
+	/**
+	 * Stat date controls
+	 *
+	 * @since v1.0
+	 *
+	 * @return void
+	 */
+
 	private function bpp_stats_controls() {
-			$date_options = apply_filters( 'bbp_stats_date_options', array(
-				'this_month' 	=> __( 'This Month', 'bpp-stats' ),
-				'last_month' 	=> __( 'Last Month', 'bpp-stats' ),
-				'this_quarter'	=> __( 'This Quarter', 'bpp-stats' ),
-				'last_quarter'	=> __( 'Last Quarter', 'bpp-stats' ),
-				'this_year'		=> __( 'This Year', 'bpp-stats' ),
-				'last_year'		=> __( 'Last Year', 'bpp-stats' ),
-				'other'			=> __( 'Other', 'bpp-stats' )
-			) );
+		$date_options = apply_filters( 'bbp_stats_date_options', array(
+			'this_month' 	=> __( 'This Month', 'bpp-stats' ),
+			'last_month' 	=> __( 'Last Month', 'bpp-stats' ),
+			'this_quarter'	=> __( 'This Quarter', 'bpp-stats' ),
+			'last_quarter'	=> __( 'Last Quarter', 'bpp-stats' ),
+			'this_year'		=> __( 'This Year', 'bpp-stats' ),
+			'last_year'		=> __( 'Last Year', 'bpp-stats' ),
+			'other'			=> __( 'Other', 'bpp-stats' )
+		) );
 
-			$dates = self::graph_dates();
+		$dates = self::graph_dates();
 
-			$display = $dates['range'] == 'other' ? '' : 'style="display:none;"';
+		$display = $dates['range'] == 'other' ? '' : 'style="display:none;"';
 
-			?>
-			<form id="bpp-stats-graphs-filter" method="get">
-				<div class="tablenav top">
-			       	<input type="hidden" name="post_type" value="<?php echo bbp_get_forum_post_type(); ?>"/>
-			       	<input type="hidden" name="page" value="bbp-stats"/>
+		?>
+		<form id="bpp-stats-graphs-filter" method="get">
+			<div class="tablenav top">
+		       	<input type="hidden" name="post_type" value="<?php echo bbp_get_forum_post_type(); ?>"/>
+		       	<input type="hidden" name="page" value="bbp-stats"/>
 
-			       	<select id="bpp-stats-date-options" name="range">
-			       		<?php
-			       		foreach ( $date_options as $key => $option ) {
-			       			echo '<option value="' . esc_attr( $key ) . '" ' . selected( $key, $dates['range'] ) . '>' . esc_html( $option ) . '</option>';
-			       		}
-			       		?>
+		       	<select id="bpp-stats-date-options" name="range">
+		       		<?php
+		       		foreach ( $date_options as $key => $option ) {
+		       			echo '<option value="' . esc_attr( $key ) . '" ' . selected( $key, $dates['range'] ) . '>' . esc_html( $option ) . '</option>';
+		       		}
+		       		?>
+		       	</select>
+
+		       	<span id="bpp-stats-date-range-options" <?php echo $display; ?>>
+					&mdash;
+				    <span><?php _e( 'From', 'bpp-stats' ); ?>&nbsp;</span>
+			       	<select id="bpp-stats-month-start" name="m_start">
+			       		<?php for ( $i = 1; $i <= 12; $i++ ) : ?>
+			       			<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['m_start'] ); ?>><?php echo self::bbp_stats_month_num_to_name( $i ); ?></option>
+				       	<?php endfor; ?>
 			       	</select>
+			       	<span><?php _e( 'To', 'bpp-stats' ); ?>&nbsp;</span>
+			       	<select id="bpp-stats-month-start" name="m_end">
+			       		<?php for ( $i = 1; $i <= 12; $i++ ) : ?>
+			       			<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['m_end'] ); ?>><?php echo self::bbp_stats_month_num_to_name( $i ); ?></option>
+				       	<?php endfor; ?>
+			       	</select>
+			       	<select id="bpp-stats-year" name="year">
+			       		<?php for ( $i = 2007; $i <= $dates['year_end']; $i++ ) : ?>
+			       			<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['year'] ); ?>><?php echo $i; ?></option>
+				       	<?php endfor; ?>
+			       	</select>
+			    </span>
 
-			       	<span id="bpp-stats-date-range-options" <?php echo $display; ?>>
-						&mdash;
-					    <span><?php _e( 'From', 'bpp-stats' ); ?>&nbsp;</span>
-				       	<select id="bpp-stats-month-start" name="m_start">
-				       		<?php for ( $i = 1; $i <= 12; $i++ ) : ?>
-				       			<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['m_start'] ); ?>><?php echo self::bbp_stats_month_num_to_name( $i ); ?></option>
-					       	<?php endfor; ?>
-				       	</select>
-				       	<span><?php _e( 'To', 'bpp-stats' ); ?>&nbsp;</span>
-				       	<select id="bpp-stats-month-start" name="m_end">
-				       		<?php for ( $i = 1; $i <= 12; $i++ ) : ?>
-				       			<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['m_end'] ); ?>><?php echo self::bbp_stats_month_num_to_name( $i ); ?></option>
-					       	<?php endfor; ?>
-				       	</select>
-				       	<select id="bpp-stats-year" name="year">
-				       		<?php for ( $i = 2007; $i <= $dates['year_end']; $i++ ) : ?>
-				       			<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['year'] ); ?>><?php echo $i; ?></option>
-					       	<?php endfor; ?>
-				       	</select>
-				    </span>
+		       	<input type="submit" class="button-secondary" value="<?php _e( 'Filter', 'bpp-stats' ); ?>"/>
+			</div>
+		</form>
+		<?php
+	}
 
-			       	<input type="submit" class="button-secondary" value="<?php _e( 'Filter', 'bpp-stats' ); ?>"/>
-				</div>
-			</form>
-			<?php
-		}
 
+	/**
+	 * Retrieve dates query parameters
+	 *
+	 * @since v1.0
+	 *
+	 * @return array
+	 */
 
 	private function graph_dates() {
 
@@ -507,6 +565,15 @@ class PW_BBP_Stats {
 		return apply_filters( 'bbp_stats_graph_dates', $dates );
 	}
 
+
+	/**
+	 * Convert a month number to the corresponding month name
+	 *
+	 * @since v1.0
+	 *
+	 * @return string
+	 */
+
 	private function bbp_stats_month_num_to_name( $n ) {
 		$timestamp = mktime( 0, 0, 0, $n, 1, 2005 );
 
@@ -515,8 +582,18 @@ class PW_BBP_Stats {
 
 }
 
+
+/**
+ * Load our singleton class
+ *
+ * @since v1.0
+ *
+ * @return void
+ */
+
 function pw_bbp_stats() {
 	return PW_BBP_Stats::instance();
 }
 
+// Load the class
 pw_bbp_stats();

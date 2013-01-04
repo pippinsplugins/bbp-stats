@@ -454,29 +454,29 @@ class PW_BBP_Stats {
 
 		$dates = array();
 
-		$dates['range']		= isset( $_GET['range'] )	? $_GET['range']	: 'this_month';
-		$dates['day']		= isset( $_GET['day'] ) 	? $_GET['day'] 		: null;
-		$dates['m_start'] 	= isset( $_GET['m_start'] ) ? $_GET['m_start'] 	: 1;
-		$dates['m_end']		= isset( $_GET['m_end'] ) 	? $_GET['m_end'] 	: 12;
-		$dates['year'] 		= isset( $_GET['year'] ) 	? $_GET['year'] 	: date( 'Y' );
-		$dates['year_end']	= date( 'Y' );
+		$dates['range']    = isset( $_GET['range'] )   ? $_GET['range']   : 'this_month';
+		$dates['day']      = isset( $_GET['day'] )     ? $_GET['day']     : null;
+		$dates['m_start']  = isset( $_GET['m_start'] ) ? $_GET['m_start'] : 1;
+		$dates['m_end']    = isset( $_GET['m_end'] )   ? $_GET['m_end']   : 12;
+		$dates['year']     = isset( $_GET['year'] )    ? $_GET['year']    : date( 'Y' );
+		$dates['year_end'] = date( 'Y' );
 
 		// Modify dates based on predefined ranges
 		switch( $dates['range'] ) :
 
 			case 'this_month' :
 
-				$dates['m_start'] 	= date( 'n' );
-				$dates['m_end']		= date( 'n' );
-				$dates['year']		= date( 'Y' );
+				$dates['m_start']   = date( 'n' );
+				$dates['m_end']     = date( 'n' );
+				$dates['year']      = date( 'Y' );
 
 				break;
 
 			case 'last_month' :
 
-				$dates['m_start'] 	= date( 'n' ) == 1 ? 12 : date( 'n' ) - 1;
-				$dates['m_end']		= date( 'n' ) == 1 ? 12 : date( 'n' ) - 1;
-				$dates['year']		= date( 'n' ) == 1 ? date( 'Y' ) - 1 : date( 'Y' );
+				$dates['m_start']   = date( 'n' ) == 1 ? 12 : date( 'n' ) - 1;
+				$dates['m_end']     = date( 'n' ) == 1 ? 12 : date( 'n' ) - 1;
+				$dates['year']      = date( 'n' ) == 1 ? date( 'Y' ) - 1 : date( 'Y' );
 
 				break;
 
@@ -486,27 +486,27 @@ class PW_BBP_Stats {
 
 				if ( $month_now <= 3 ) {
 
-					$dates['m_start'] 	= 1;
-					$dates['m_end']		= 3;
-					$dates['year']		= date( 'Y' );
+					$dates['m_start']   = 1;
+					$dates['m_end']     = 3;
+					$dates['year']      = date( 'Y' );
 
 				} else if ( $month_now <= 6 ) {
 
-					$dates['m_start'] 	= 4;
-					$dates['m_end']		= 6;
-					$dates['year']		= date( 'Y' );
+					$dates['m_start']   = 4;
+					$dates['m_end']     = 6;
+					$dates['year']      = date( 'Y' );
 
 				} else if ( $month_now <= 9 ) {
 
-					$dates['m_start'] 	= 7;
-					$dates['m_end']		= 9;
-					$dates['year']		= date( 'Y' );
+					$dates['m_start']   = 7;
+					$dates['m_end']     = 9;
+					$dates['year']      = date( 'Y' );
 
 				} else {
 
-					$dates['m_start'] 	= 10;
-					$dates['m_end']		= 12;
-					$dates['year']		= date( 'Y' );
+					$dates['m_start']   = 10;
+					$dates['m_end']     = 12;
+					$dates['year']      = date( 'Y' );
 
 				}
 
@@ -518,27 +518,27 @@ class PW_BBP_Stats {
 
 				if ( $month_now <= 3 ) {
 
-					$dates['m_start'] 	= 10;
-					$dates['m_end']		= 12;
-					$dates['year']		= date( 'Y' ) - 1; // Previous year
+					$dates['m_start']   = 10;
+					$dates['m_end']     = 12;
+					$dates['year']      = date( 'Y' ) - 1; // Previous year
 
 				} else if ( $month_now <= 6 ) {
 
-					$dates['m_start'] 	= 1;
-					$dates['m_end']		= 3;
-					$dates['year']		= date( 'Y' );
+					$dates['m_start']   = 1;
+					$dates['m_end']     = 3;
+					$dates['year']      = date( 'Y' );
 
 				} else if ( $month_now <= 9 ) {
 
-					$dates['m_start'] 	= 4;
-					$dates['m_end']		= 6;
-					$dates['year']		= date( 'Y' );
+					$dates['m_start']   = 4;
+					$dates['m_end']     = 6;
+					$dates['year']      = date( 'Y' );
 
 				} else {
 
-					$dates['m_start'] 	= 7;
-					$dates['m_end']		= 9;
-					$dates['year']		= date( 'Y' );
+					$dates['m_start']   = 7;
+					$dates['m_end']     = 9;
+					$dates['year']      = date( 'Y' );
 
 				}
 
@@ -546,17 +546,17 @@ class PW_BBP_Stats {
 
 			case 'this_year' :
 
-				$dates['m_start'] 	= 1;
-				$dates['m_end']		= 12;
-				$dates['year']		= date( 'Y' );
+				$dates['m_start']       = 1;
+				$dates['m_end']         = 12;
+				$dates['year']          = date( 'Y' );
 
 				break;
 
 			case 'last_year' :
 
-				$dates['m_start'] 	= 1;
-				$dates['m_end']		= 12;
-				$dates['year']		= date( 'Y' ) - 1;
+				$dates['m_start']       = 1;
+				$dates['m_end']         = 12;
+				$dates['year']          = date( 'Y' ) - 1;
 
 				break;
 
